@@ -162,3 +162,8 @@ cython_debug/
 .idea/
 .venv/
 /.python-version
+/localstack/cache/machine.json
+/localstack/cache/server.test.pem
+/localstack/cache/server.test.pem.crt
+/localstack/cache/server.test.pem.key
+/localstack/cache/service-catalog-4_0_4_dev31-1_35_76.pickle

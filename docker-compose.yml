@@ -1,15 +1,60 @@
 version: '3'
+
 services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_USER: ${DB_NAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_NAME:-postgres}
-      POSTGRES_DB: ${DB_NAME:-db_test}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DATABASE:-db_test}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  django:
+    build:
+      context: ./admin_panel_service
+      dockerfile: Dockerfile
+    env_file:
+      - ./admin_panel_service/admin_settings/env
+    environment:
+#      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+#      POSTGRES_DATABASE: ${POSTGRES_DATABASE:-db_test}
+      POSTGRES_HOST: db
+#      POSTGRES_PORT: 5432
+      DJANGO_SUPERUSER_PASSWORD: admin
+    volumes:
+      - static_content:/app/static_content
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  tg_bot:
+    build:
+      context: ./tg_bot_service
+      dockerfile: Dockerfile
+    env_file:
+      - ./tg_bot_service/settings/env
+    environment:
+#      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+#      POSTGRES_DATABASE: ${POSTGRES_DATABASE:-db_test}
+      POSTGRES_HOST: db
+#      POSTGRES_PORT: 5432
+#      BOT_TOKEN: ${BOT_TOKEN}
+#      PAYMENT_TOKEN: ${PAYMENT_TOKEN}
+#      SUBSCRIBE_GROUP_ID: ${SUBSCRIBE_GROUP_ID}
+#      SUBSCRIBE_CHANNEL_ID: ${SUBSCRIBE_CHANNEL_ID}
+#      SUBSCRIBE_GROUP_LINK: ${SUBSCRIBE_GROUP_LINK}
+#      SUBSCRIBE_CHANNEL_LINK: ${SUBSCRIBE_CHANNEL_LINK}
+    volumes:
+      - static_content:/app/static_content
+    depends_on:
+      - db
+
 volumes:
   postgres_data:
+  static_content:
