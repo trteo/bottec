@@ -25,7 +25,7 @@ password: admin
 
 ### Запуск:
 ```commandline
-git clone git@github.com:trteo/bottec.git
+git clone https://github.com/trteo/bottec.git
 git submodule update --init
 docker-compose up --build
 ```
