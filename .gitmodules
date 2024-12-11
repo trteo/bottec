@@ -1,6 +1,6 @@
 [submodule "admin_panel_service"]
 	path = admin_panel_service
-	url = git@github.com:trteo/admin_panel_service.git
+	url = https://github.com/trteo/admin_panel_service.git
 [submodule "tg_bot_service"]
 	path = tg_bot_service
-	url = git@github.com:trteo/tg_bot_service.git
+	url = https://github.com/trteo/tg_bot_service.git
